@@ -18,14 +18,32 @@ namespace WebApiExample.Controllers
         {
             Students student = new Students();
             student.Name = "Postman";
-            vuelingEntities.Students.Add(student);
-            return Ok(Get());
+            var result = vuelingEntities.Students.Add(student);
+            vuelingEntities.SaveChanges();
+            return Ok(result);
         }
 
         [HttpGet]
         public IEnumerable<Students> Get()
         {
             return vuelingEntities.Students.ToList();
+        }
+
+        [HttpPut]
+        public IHttpActionResult Update()
+        {
+            var student = vuelingEntities.Students.Find(1);
+            student.Name = "Update";
+            vuelingEntities.SaveChanges();
+            return Ok(Get());
+        }
+
+        [HttpDelete]
+        public IHttpActionResult Delete()
+        {
+            vuelingEntities.Students.Remove(vuelingEntities.Students.Find(1));
+            vuelingEntities.SaveChanges();
+            return Ok(Get());
         }
     }
 }
